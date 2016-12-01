@@ -1,10 +1,18 @@
 node {
 	def image
+	def winimage
+	
     stage("Checkout"){
         checkout scm
 	}
+	
     stage("Prepare Docker"){
         image  = docker.build 'simons-node'
+	}
+	
+	stage("Prepare Other Docker"){
+		
+        winimage  = docker.build 'simons-win-node'
 	}
 
 	image.inside {
@@ -13,7 +21,7 @@ node {
 		}
 		
 		stage("Test"){
-			sh "./build/dockerandjenkins"
+			sh "./build/dockerandjenkinsapp"
 		}
 	}
 
