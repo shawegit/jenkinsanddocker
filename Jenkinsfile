@@ -17,7 +17,7 @@ node {
 		
 		stage("Test"){
 			sh "cd build && ctest -T test --no-compress-output || /usr/bin/true"
-			sh "cd build && ls"
+			sh "cd build && ls && cat DartConfiguration.tcl"
 		}
 		
 		stage("Code analysis"){
