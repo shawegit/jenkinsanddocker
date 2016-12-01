@@ -4,13 +4,8 @@ node {
         def env  = docker.build 'simons-node'
 
         env.inside {
-            stage("Validate"){
-				sh "echo Validate stuff"
-			}
-			
             stage("Make"){
-				sh "ls"
-				sh "mkdir build && cd build && cmake .."
+				sh "mkdir -p build && cd build && cmake .."
 				sh "ls"
 				sh "make"
 			}
