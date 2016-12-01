@@ -8,8 +8,10 @@ node {
 				sh "echo Validate stuff"
 			}
 			
-            stage("Test"){
-				sh "Test"
+            stage("Make"){
+				sh "ls"
+				sh "cmake"
+				sh "make"
 			}
         }
 	}

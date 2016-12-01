@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project (dockerandjenkins CXX)
+include_directories(include)
+file(GLOB SOURCES src/*.* include/*.*))
+add_executable(dockerandjenkins ${SOURCES})
