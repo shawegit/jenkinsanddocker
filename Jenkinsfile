@@ -5,9 +5,7 @@ node {
 
         env.inside {
             stage("Make"){
-				sh "mkdir -p build && cd build && cmake .."
-				sh "ls"
-				sh "make"
+				sh "mkdir -p build && cd build && cmake .. && make"
 			}
         }
 	}
