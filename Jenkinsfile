@@ -1,10 +1,6 @@
 node {
 	def image
-	def winimage
-	
-    stage("Cleanup"){
-        deleteDir()
-	}
+
     stage("Checkout"){
         checkout scm
 	}
@@ -28,6 +24,10 @@ node {
 			step([$class: 'JUnitResultArchiver', testResults: './TestResults.xml'])
 			sh "cd build && make coverage"
 		}
+	}
+		
+    stage("Cleanup"){
+        deleteDir()
 	}
 
 }

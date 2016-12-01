@@ -1,7 +1,7 @@
 FROM ubuntu
 
 RUN apt-get update
-RUN apt-get install -y build-essential wget cmake software-properties-common
+RUN apt-get install -y build-essential wget cmake software-properties-common checkinstall
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y
 RUN apt-get update
 RUN apt-get install gcc-snapshot -y
