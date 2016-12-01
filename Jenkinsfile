@@ -1,12 +1,14 @@
 node {
-	def env
-    stage("Prepare Docker"){
+	def image
+    stage("Checkout"){
         checkout scm
-        env  = docker.build 'simons-node'
+	}
+    stage("Prepare Docker"){
+        image  = docker.build 'simons-node'
 	}
 
-	env.inside {
-		stage("Make"){
+	image.inside {
+		stage("Build"){
 			sh "mkdir -p build && cd build && cmake .. && make"
 		}
 		
