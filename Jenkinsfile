@@ -1,7 +1,8 @@
 node {
+	def env
     stage("Prepare"){
         checkout scm
-        def env  = docker.build 'simons-node'
+        env  = docker.build 'simons-node'
 	}
 	stage("Action"){
         env.inside {
