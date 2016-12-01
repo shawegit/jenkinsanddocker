@@ -16,7 +16,8 @@ node {
 		}
 		
 		stage("Test"){
-			sh "cd build && ctest -T test --no-compress-output || /usr/bin/true"
+			sh "cd build && ls && ctest -T test --no-compress-output || /usr/bin/true"
+			sh "cd build && ls"
 		}
 		
 		stage("Code analysis"){
