@@ -16,7 +16,7 @@ node {
 		}
 		
 		stage("Test"){
-			sh "cd build && ls && ctest -T test --no-compress-output || /usr/bin/true"
+			sh "cd build && ls && ctest"
 			sh "cd build && ls"
 		}
 		

@@ -14,13 +14,13 @@ FUNCTION(ADD_TESTS_AND_COVERAGE)
     foreach(SOURCE_FILE_NAME  ${TEST_SRCS})
         #Extract the filename without an extension (NAME_WE)
         get_filename_component(testSuiteName ${SOURCE_FILE_NAME} NAME_WE)
-        #Rename Test_... for better ordering
+        #Rename TEST_... for better ordering
         string(REGEX REPLACE "Test" "" testSuiteName ${testSuiteName})
-        set(testSuiteName Test_${testSuiteName})
+        set(testSuiteName TEST_${testSuiteName})
         #Add compile target
         add_executable(${testSuiteName} ${SOURCE_FILE_NAME})
         #link to Boost libraries AND your targets and dependencies
-        target_link_libraries(${testSuiteName} ${ARG_LIBNAME} ${Boost_LIBRARIES} )
+        target_link_libraries(${testSuiteName} optimized ${ARG_LIBNAME} debug ${ARG_LIBNAME} ${Boost_LIBRARIES} )
         #Open the current source file, i.e. some test/.cpp
         file(READ "${SOURCE_FILE_NAME}" SOURCE_FILE_CONTENTS)
         #Get all test functions of the form BOOST_FIXTURE_TEST_CASE(NAME, FIXTURE), but only the part BOOST_FIXTURE_TEST_CASE(NAME
