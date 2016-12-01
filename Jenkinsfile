@@ -16,10 +16,15 @@ node {
 		}
 		
 		stage("Test"){
-			sh "./build/dockerandjenkinsapp"
+			sh "cd build && ctest -T test --no-compress-output || /usr/bin/true"
+		}
+		
+		stage("Code analysis"){
+			sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > ./TestResults.xml"
+			step([$class: 'JUnitResultArchiver', testResults: './TestResults.xml'])
+			sh "cd build && make coverage"
 		}
 	}
-
 
     stage("Cleanup"){
         deleteDir()
