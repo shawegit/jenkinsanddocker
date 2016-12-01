@@ -16,11 +16,11 @@ node {
 		
 		stage("Test"){
 			sh "cd build && ctest -T test --no-compress-output || /usr/bin/true"
-			sh "cd build && ls && cat DartConfiguration.tcl"
 		}
 		
 		stage("Code analysis"){
 			sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > ./TestResults.xml"
+			sh "ls && cd build/Testing/ && ls"
 			step([$class: 'JUnitResultArchiver', testResults: './TestResults.xml'])
 			sh "cd build && make coverage"
 		}
