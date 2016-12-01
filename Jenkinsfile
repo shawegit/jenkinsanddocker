@@ -8,7 +8,7 @@ node {
 				sh "mkdir -p build && cd build && cmake .. && make"
 			}
 			stage("Test"){
-				sh "ch build && ls"
+				sh "cd build && ls"
 				sh "./build/dockerandjenkins"
 			}
         }
