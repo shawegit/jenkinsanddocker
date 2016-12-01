@@ -6,7 +6,7 @@ FUNCTION(ADD_TESTS_AND_COVERAGE)
     set(Boost_USE_STATIC_LIBS        ON) # only find static libs
     set(Boost_USE_MULTITHREADED      ON)
     set(Boost_USE_STATIC_RUNTIME    OFF)
-    find_package(Boost COMPONENTS system filesystem unit_test_framework)
+    find_package(Boost COMPONENTS unit_test_framework)
     include_directories (${Boost_INCLUDE_DIRS})
     #I like to keep test files in a separate source directory called test
     file(GLOB TEST_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} test/*.cpp)
