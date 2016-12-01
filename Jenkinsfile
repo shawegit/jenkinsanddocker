@@ -2,6 +2,9 @@ node {
 	def image
 	def winimage
 	
+    stage("Cleanup"){
+        deleteDir()
+	}
     stage("Checkout"){
         checkout scm
 	}
@@ -27,7 +30,4 @@ node {
 		}
 	}
 
-    stage("Cleanup"){
-        deleteDir()
-	}
 }
