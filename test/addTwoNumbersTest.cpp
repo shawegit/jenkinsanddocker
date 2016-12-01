@@ -6,8 +6,8 @@
 #include "mylib.h"
 
 BOOST_AUTO_TEST_SUITE(AddTwoNumbersSuite)
-
-BOOST_AUTO_TEST_CASE(AddPositives)
+class Dummy {};
+BOOST_FIXTURE_TEST_CASE(AddPositives, Dummy)
 {
 	auto result = addTwoInts(0, 0);
 	BOOST_CHECK_EQUAL(result, 0); 
@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(AddPositives)
 	BOOST_CHECK_EQUAL(result, 30);
 }
 
-BOOST_AUTO_TEST_CASE(AddNegatives)
+BOOST_FIXTURE_TEST_CASE(AddNegatives, Dummy)
 {
 	auto result = addTwoInts(-10, 0);
 	BOOST_CHECK_EQUAL(result, -10);
@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(AddNegatives)
 	BOOST_CHECK_EQUAL(result, -30);
 }
 
-BOOST_AUTO_TEST_CASE(AddMixed)
+BOOST_FIXTURE_TEST_CASE(AddMixed, Dummy)
 {
 	auto result = addTwoInts(10, -20);
 	BOOST_CHECK_EQUAL(result, -10);
