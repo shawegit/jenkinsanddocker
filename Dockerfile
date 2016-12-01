@@ -9,6 +9,7 @@ RUN apt-get update
 RUN apt-get install gcc-6 g++-6 -y 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5
+RUN apt-get install libboost-test-dev -y
 
 RUN useradd jenkins --shell /bin/bash --create-home
 USER jenkins

@@ -10,14 +10,9 @@ node {
         image  = docker.build 'simons-node'
 	}
 	
-	stage("Prepare Other Docker"){
-		
-        winimage  = docker.build 'simons-win-node'
-	}
-
 	image.inside {
 		stage("Build"){
-			sh "mkdir -p build && cd build && cmake .. && make"
+			sh "mkdir -p build && cd build && cmake -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release .. && make"
 		}
 		
 		stage("Test"){
