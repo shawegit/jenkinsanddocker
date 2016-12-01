@@ -10,7 +10,8 @@ node {
 			
             stage("Make"){
 				sh "ls"
-				sh "cmake"
+				sh "mkdir build && cd build && cmake .."
+				sh "ls"
 				sh "make"
 			}
         }
