@@ -16,10 +16,8 @@ node {
 		}
 		
 		stage("Test"){
-			dir("build"){
-				sh "ls && cd .. && ls"
-				sh "ctest -T test --no-compress-output || /usr/bin/true"
-			}
+			sh "cd build && ctest -T test --no-compress-output || /usr/bin/true"
+			sh "ch build && ls"
 		}
 		
 		stage("Code analysis"){
