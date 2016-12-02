@@ -15,6 +15,9 @@ node {
 		}
 		
 		stage("Test"){
+			//Running ctest with the option -T Test will make CTest generate an XML output file in a sub-folder Testing inside the build folder
+			//The || /usr/bin/true is necessary to prevent Jenkins from aborting the build 
+			//prematurely (without running the xUnit plug-in) if some tests fail.
 			sh "cd build && ctest -T test --no-compress-output || /usr/bin/true"
 		}
 		
@@ -27,7 +30,7 @@ node {
 						[$class: 'SkippedThreshold', failureThreshold: '0'],
 						[$class: 'FailedThreshold', failureThreshold: '0']],
 					tools: [
-					[$class: 'JUnitType', pattern: 'reports/TestResults.xml']]]
+					[$class: 'JUnitType', pattern: 'build/Testing/**/Test.xml']]]
 			)
 			sh "cd build && make coverage && cp coverage.xml ../reports/coverage.xml"
 			sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> /reports/cppcheck.xml"
