@@ -27,6 +27,8 @@ node {
 			//sh "cd build && make coverage && cp coverage.xml ../reports/coverage.xml"
 			//sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> /reports/cppcheck.xml"
 		}
+		
+		archiveArtifacts 'TestResults.xml' 
 	}
 		
     stage("Cleanup"){
