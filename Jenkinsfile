@@ -22,9 +22,9 @@ node {
 		
 		stage("Code analysis"){
 			sh "mkdir -p reports"
-			sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > TestResults.xml"
+			sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > ./reports/TestResults.xml"
 			sh "ls"
-			junit 'TestResults.xml'
+			junit './reports/TestResults.xml'
 			//sh "cd build && make coverage && cp coverage.xml ../reports/coverage.xml"
 			//sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> /reports/cppcheck.xml"
 		}
