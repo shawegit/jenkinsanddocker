@@ -29,6 +29,7 @@ node {
 		}
 		
 		stage("Archive Build"){
+			sh "cd build && ls"
 			sh "tar cfvj archiv.tar.gz  build/dockerandjenkinsapp build/dockerandjenkinslib"
 			archiveArtifacts 'archiv.tar.gz' 
 		}
