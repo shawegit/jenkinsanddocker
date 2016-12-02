@@ -28,7 +28,10 @@ node {
 			//sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> /reports/cppcheck.xml"
 		}
 		
-		archiveArtifacts 'TestResults.xml' 
+		stage("Archive Build"){
+			sh "tar cfvj archiv.tar.gz  build/dockerandjenkinsapp build/dockerandjenkinslib"
+			archiveArtifacts 'archiv.tar.gz' 
+		}
 	}
 		
     stage("Cleanup"){
