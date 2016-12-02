@@ -1,6 +1,5 @@
 node {
 	def image
-
     stage("Checkout"){
         checkout scm
 	}
@@ -24,7 +23,7 @@ node {
 		stage("Code analysis"){
 			sh "mkdir -p reports"
 			sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > ./reports/TestResults.xml"
-			junit '/reports/TestResults.xml'
+			junit 'TestResults.xml'
 			//step([$class: 'XUnitBuilder',
 			//		thresholds: [
 			//			[$class: 'SkippedThreshold', failureThreshold: '0'],
