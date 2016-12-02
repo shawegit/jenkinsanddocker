@@ -23,6 +23,7 @@ node {
 		stage("Code analysis"){
 			sh "mkdir -p reports"
 			sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > ./reports/TestResults.xml"
+			sh "ls"
 			junit 'TestResults.xml'
 			//step([$class: 'XUnitBuilder',
 			//		thresholds: [
