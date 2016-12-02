@@ -9,6 +9,7 @@ node {
 	}
 	
 	image.inside {
+	
 		stage("Build"){
 			sh "mkdir -p build && cd build && cmake -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release .. && make"
 		}
@@ -29,8 +30,10 @@ node {
 		}
 		
 		stage("Archive Build"){
-			sh "tar cfvj archiv.tar.gz  build/dockerandjenkinsapp build/libdockerandjenkinslib.so"
-			archiveArtifacts 'archiv.tar.gz' 
+			sh "zip archiv.zip build/dockerandjenkinsapp build/libdockerandjenkinslib.so"
+			archiveArtifacts 'archiv.zip' 
+			// Maybe something like
+			//sh "curl -T archiv.zip -u username:password ftp://our_archive_server//commitid//whatever"
 		}
 	}
 		

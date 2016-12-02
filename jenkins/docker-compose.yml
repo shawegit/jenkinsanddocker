@@ -1,0 +1,11 @@
+data:
+ build: data
+master:
+  build: master
+  volumes:
+    - "/var/run/docker.sock:/var/run/docker.sock"
+  volumes_from:
+    - data
+  ports:
+    - "8080:8080"
+    - "50000:50000"
