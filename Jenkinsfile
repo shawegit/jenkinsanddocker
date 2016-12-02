@@ -31,8 +31,8 @@ node {
 			//			[$class: 'FailedThreshold', failureThreshold: '0']],
 			//		tools: [[$class: 'JUnitType', pattern: 'build/Testing/**/Test.xml']]]
 			//)
-			sh "cd build && make coverage && cp coverage.xml ../reports/coverage.xml"
-			sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> /reports/cppcheck.xml"
+			//sh "cd build && make coverage && cp coverage.xml ../reports/coverage.xml"
+			//sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> /reports/cppcheck.xml"
 		}
 	}
 		
