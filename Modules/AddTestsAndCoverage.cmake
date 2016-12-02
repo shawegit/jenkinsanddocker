@@ -6,7 +6,7 @@ FUNCTION(ADD_TESTS_AND_COVERAGE)
     set(Boost_USE_STATIC_LIBS        ON) # only find static libs
     set(Boost_USE_MULTITHREADED      ON)
     set(Boost_USE_STATIC_RUNTIME    OFF)
-    find_package(Boost COMPONENTS unit_test_framework)
+    find_package(Boost COMPONENTS unit_test_framework REQUIRED)
     include_directories (${Boost_INCLUDE_DIRS})
     #I like to keep test files in a separate source directory called test
     file(GLOB TEST_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} test/*.cpp)
@@ -25,6 +25,8 @@ FUNCTION(ADD_TESTS_AND_COVERAGE)
         file(READ "${SOURCE_FILE_NAME}" SOURCE_FILE_CONTENTS)
         #Get all test functions of the form BOOST_FIXTURE_TEST_CASE(NAME, FIXTURE), but only the part BOOST_FIXTURE_TEST_CASE(NAME
         string(REGEX MATCHALL "BOOST_FIXTURE_TEST_CASE\\( *([A-Za-z_0-9]+) *" FOUND_TESTS ${SOURCE_FILE_CONTENTS})
+        string(REGEX MATCHALL "BOOST_AUTO_TEST_CASE\\( *([A-Za-z_0-9]+) *" FOUND_AUTO_TESTS ${SOURCE_FILE_CONTENTS})
+		list(APPEND FOUND_TESTS ${FOUND_AUTO_TESTS})
         # Get the test suits name. This is necessary for calling the respective subtests in run_test
         string(REGEX MATCHALL "BOOST_AUTO_TEST_SUITE\\( *([A-Za-z_0-9]+) *\\)" TEST_SUIT_NAMES ${SOURCE_FILE_CONTENTS})
         list(GET TEST_SUIT_NAMES 0 SUITE_NAME)
