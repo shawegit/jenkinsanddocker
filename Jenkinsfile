@@ -80,3 +80,9 @@ parallel "Linux":{
 	}
 },
 failFast: true
+
+node("master"){
+	unstash "winbuild"
+	unstash "linuxbuild"
+	sh "ls"
+}
