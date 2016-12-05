@@ -13,7 +13,6 @@ node("master")
 	}
 	
 	image.inside {
-	
 		stage("Build"){
 			sh "mkdir -p build && cd build && cmake -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release .. && make"
 		}
