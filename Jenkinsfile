@@ -9,7 +9,6 @@ parallel "Linux":{
 	node("master"){
 		deleteDir()
 		unstash "code"
-		sh "ls"
 		def image
 		stage("Prepare Docker"){
 			image  = docker.build 'simons-node'
@@ -66,7 +65,8 @@ parallel "Linux":{
 			bat "if not exist build md build"
 			bat "cd build && cmake -G \"Visual Studio 14 2015 Win64\" -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release .."
 			bat "cd build && msbuild dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
-			bat "if not exist winbuild md winbuild && xcopy build/Release/* winbuild"
+			bat "if not exist winbuild md winbuild"
+			bat "xcopy build/Release/* winbuild"
 			stash name: "winbuild", include: "winbuild/*"
 		}
 		deleteDir()
