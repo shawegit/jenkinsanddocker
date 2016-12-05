@@ -5,7 +5,7 @@ node("master"){
 	stash name: "code"
 }
 
-node("master")
+node("master"){
 	unstash "code"
 	def image
     stage("Prepare Docker"){
