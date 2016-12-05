@@ -45,7 +45,7 @@ node {
 		//unstash 'reports'
 		sh "ls"
 		//sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> /reports/cppcheck.xml"
-		sh "echo 'sonar.projectKey=shawe:jenkinsanddocker sonar.projectVersion=1.0 sonar.projectName=JenkinsandDocker sonar.sources=src sonar.cxx.includeDirectories=include sonar.cxx.coverage.reportPath=coverage.xml sonar.cxx.xunit.reportsPaths=TestResults.xml' >> sonar-project.properties"
+		sh "echo 'sonar.projectKey=shawe:jenkinsanddocker sonar.projectVersion=1.0 sonar.projectName=JenkinsandDocker sonar.sources=src sonar.cxx.includeDirectories=include sonar.cxx.coverage.reportPath=coverage.xml sonar.cxx.xunit.reportsPaths=TestResults.xml' > sonar-project.properties"
 		sh "cat sonar-project.properties"
 		def scannerHome = tool 'sonarscanner';
 		withSonarQubeEnv('sonarserver') {
