@@ -39,7 +39,7 @@ parallel "Linux":{
 			
 			stage("Linux Archive Build"){
 				sh "mkdir -p linuxbuild && cp build/dockerandjenkinsapp linuxbuild/dockerandjenkinsapp && cp build/libdockerandjenkinslib.so linuxbuild/libdockerandjenkinslib.so"
-				stash name: "linuxbuild" include: "linuxbuild/*"
+				stash name: "linuxbuild", include: "linuxbuild/*"
 				sh "zip archiv.zip build/dockerandjenkinsapp build/libdockerandjenkinslib.so"
 				archiveArtifacts 'archiv.zip' 
 				// Maybe something like 
@@ -74,6 +74,7 @@ parallel "Linux":{
 			bat "if not exist build md build"
 			bat "cd build && cmake -G \"Visual Studio 14 2015 Win64\" -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release .."
 			bat "cd build && msbuild dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+			stash name: "winbuild", include: "build/Release/*"
 		}
 		deleteDir()
 	}
