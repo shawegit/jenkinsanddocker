@@ -27,7 +27,7 @@ node {
 		stage("Code analysis"){
 			sh "mkdir -p reports"
 			sh "cd build && make coverage && mv coverage.xml ../reports/"
-			sh "ls"
+			//sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> /reports/cppcheck.xml"
 			sh "mv TestResults.xml ./reports/"
 		}
 		
@@ -41,8 +41,6 @@ node {
 	}
 	
 	stage("SonarQubing"){
-		sh "ls"
-		//sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> /reports/cppcheck.xml"
 		sh "echo 'sonar.projectKey=shawe:jenkinsanddocker sonar.projectVersion=1.0 sonar.projectName=JenkinsandDocker sonar.sources=./src sonar.cxx.includeDirectories=./include sonar.cxx.coverage.reportPath=./reports/coverage.xml sonar.cxx.xunit.reportsPaths=./reports/TestResults.xml' > sonar-project.properties"
 		sh "cat sonar-project.properties"
 		def scannerHome = tool 'sonarscanner';
