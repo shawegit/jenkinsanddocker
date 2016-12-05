@@ -5,7 +5,7 @@ node("master"){
 	stash name: "code"
 }
 
-parallel "Unix":{
+parallel "Linux":{
 	node("master"){
 		unstash "code"
 		sh "ls"
@@ -15,11 +15,11 @@ parallel "Unix":{
 		}
 		
 		image.inside {
-			stage("Build"){
+			stage("Linux Build"){
 				sh "mkdir -p build && cd build && cmake -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release .. && make"
 			}
 			
-			stage("Test"){
+			stage("Linux Test"){
 				//Running ctest with the option -T Test will make CTest generate an XML output file
 				//in a sub-folder Testing inside the build folder
 				//The || /usr/bin/true is necessary to prevent Jenkins from aborting the build 
@@ -36,7 +36,7 @@ parallel "Unix":{
 				sh "mv TestResults.xml ./reports/"
 			}
 			
-			stage("Archive Build"){
+			stage("Linux Archive Build"){
 				sh "zip archiv.zip build/dockerandjenkinsapp build/libdockerandjenkinslib.so"
 				archiveArtifacts 'archiv.zip' 
 				// Maybe something like 
@@ -61,20 +61,20 @@ parallel "Unix":{
 			}
 		}
 			
-		stage("Cleanup"){
+		stage("Linux Cleanup"){
 			deleteDir()
 		}
 	}
 }, "Windows":{
 	node("shawewin"){
 		unstash "code"
-		stage("Build"){
+		stage("Windows Build"){
 			bat "echo %PATH%"
 			bat "md build 2>nul"
 			bat "cd build && cmake -G \"Visual Studio 14 2015 Win64\" -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release .."
 			bat "msbuild dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
 		}
-		stage("Cleanup"){
+		stage("Windows  Cleanup"){
 			deleteDir()
 		}
 	}
