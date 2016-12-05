@@ -64,7 +64,7 @@ node("master"){
 node("shawewin"){
 	checkout scm
 	stage("Windows Build"){
-		bat "mdkir build"
+		bat "md build"
 		bat "cd build && cmake -G 'Visual Studio 2014 15 Win64' -DCMAKE_BUILD_TYPE=Release .."
 		bat "\"${tool 'MSBuild'}\" dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
 	}
