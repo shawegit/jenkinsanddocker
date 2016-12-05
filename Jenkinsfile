@@ -38,8 +38,6 @@ parallel "Linux":{
 			}
 			
 			stage("Linux Archive Build"){
-				sh "mkdir -p linuxbuild && cp build/dockerandjenkinsapp linuxbuild/dockerandjenkinsapp && cp build/libdockerandjenkinslib.so linuxbuild/libdockerandjenkinslib.so"
-				stash name: 'linuxbuild' include: 'linuxbuild/*'
 				sh "zip archiv.zip build/dockerandjenkinsapp build/libdockerandjenkinslib.so"
 				archiveArtifacts 'archiv.zip' 
 				// Maybe something like 
