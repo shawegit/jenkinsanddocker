@@ -65,6 +65,7 @@ node("master"){
 }
 
 node("shawewin"){
+    deleteDir()
 	unstash "code"
 	stage("Windows Build"){
 		bat "md build"
