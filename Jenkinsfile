@@ -67,7 +67,7 @@ parallel "Linux":{
 			bat "cd build && msbuild dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
 			bat "if not exist winbuild md winbuild"
 			bat "xcopy build\\Release\\* winbuild"
-			stash name: "winbuild", include: "winbuild\*"
+			stash name: "winbuild", include: "winbuild/*"
 		}
 		deleteDir()
 	}
