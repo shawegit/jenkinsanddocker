@@ -1,9 +1,13 @@
 node("master"){
-	def image
     stage("Checkout"){
         checkout scm
 	}
-	
+	stash name: "code"
+}
+
+node("master")
+	unstash "code"
+	def image
     stage("Prepare Docker"){
         image  = docker.build 'simons-node'
 	}
@@ -62,11 +66,10 @@ node("master"){
 }
 
 node("shawewin"){
-    deleteDir()
-	checkout scm
+	unstash "code"
 	stage("Windows Build"){
 		bat "md build"
 		bat "cd build && cmake -G \"Visual Studio 14 2015 Win64\" -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release .."
-		bat "\"${tool 'MSBuild'}\" dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+		bat "msbuild dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
 	}
 }
