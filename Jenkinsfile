@@ -27,7 +27,7 @@ node {
 		stage("Code analysis"){
 			sh "cd build && make coverage && mv coverage.xml .."
 			//sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> /reports/cppcheck.xml"
-			sh "echo "sonar.projectName=jenkinsanddocker sonar.sources=src sonar.cxx.includeDirectories=include sonar.cxx.coverage.reportPath=coverage.xml sonar.cxx.xunit.reportsPaths=TestResults.xml" >> sonar-project.properties"
+			sh "echo 'sonar.projectName=jenkinsanddocker sonar.sources=src sonar.cxx.includeDirectories=include sonar.cxx.coverage.reportPath=coverage.xml sonar.cxx.xunit.reportsPaths=TestResults.xml' >> sonar-project.properties"
 			def scannerHome = tool 'sonarscanner';
 			withSonarQubeEnv('sonarserver') {
 			  sh "${scannerHome}/bin/sonar-scanner"
