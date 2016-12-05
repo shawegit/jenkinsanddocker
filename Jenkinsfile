@@ -69,6 +69,7 @@ parallel "Unix":{
 	node("shawewin"){
 		unstash "code"
 		stage("Build"){
+			bat "echo %PATH%"
 			bat "md build 2>nul"
 			bat "cd build && cmake -G \"Visual Studio 14 2015 Win64\" -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release .."
 			bat "msbuild dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
