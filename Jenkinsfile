@@ -38,6 +38,7 @@ parallel "Linux":{
 			}
 			
 			stage("Linux Archive Build"){
+				stash name: "linuxbuild" include: build/dockerandjenkinsapp, build/libdockerandjenkinslib.so
 				sh "zip archiv.zip build/dockerandjenkinsapp build/libdockerandjenkinslib.so"
 				archiveArtifacts 'archiv.zip' 
 				// Maybe something like 
