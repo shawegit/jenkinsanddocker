@@ -2,7 +2,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" indent="yes" />
 	<xsl:template match="/">
-	<assembly>
 		<assemblies>
 			<xsl:variable name="buildName" select="//Site/@BuildName"/>
 			<xsl:variable name="numberOfTests" select="count(//Site/Testing/Test)"/>
