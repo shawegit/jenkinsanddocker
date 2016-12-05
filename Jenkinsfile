@@ -47,7 +47,7 @@ node {
 		sh "echo 'sonar.sources=src' >> sonar-project.properties"
 		sh "echo 'sonar.cxx.includeDirectories=include' >> sonar-project.properties"
 		sh "echo 'sonar.cxx.coverage.reportPath=reports/coverage.xml' >> sonar-project.properties"
-		//sh "echo 'sonar.cxx.xunit.reportsPaths=reports/TestResults.xml' >> sonar-project.properties"
+		sh "echo 'sonar.cxx.xunit.reportsPaths=reports/TestResults.xml' >> sonar-project.properties"
 		sh "cat sonar-project.properties"
 		sh "ls reports"
 		sh "cat reports/TestResults.xml"
