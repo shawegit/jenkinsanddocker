@@ -3,7 +3,7 @@
 	<xsl:output method="xml" indent="yes" />
 	<xsl:template match="/">
 	<assembly>
-		<testsuites>
+		<assemblies>
 			<xsl:variable name="buildName" select="//Site/@BuildName"/>
 			<xsl:variable name="numberOfTests" select="count(//Site/Testing/Test)"/>
 			<xsl:variable name="numberOfFailures" select="count(//Site/Testing/Test[@Status!='passed'])" />
@@ -31,7 +31,6 @@
 					</testcase>
 				</xsl:for-each>
 			</testsuite>
-		</testsuites>
-		</assembly>
+		</assemblies>
 	</xsl:template>
 </xsl:stylesheet>
