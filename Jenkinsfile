@@ -25,13 +25,10 @@ node {
 		}
 		
 		stage("Code analysis"){
-			sh "cd build && make coverage && mv coverage.xml .."
-			//sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> /reports/cppcheck.xml"
-			sh "echo 'sonar.projectName=jenkinsanddocker sonar.sources=src sonar.cxx.includeDirectories=include sonar.cxx.coverage.reportPath=coverage.xml sonar.cxx.xunit.reportsPaths=TestResults.xml' >> sonar-project.properties"
-			def scannerHome = tool 'sonarscanner';
-			withSonarQubeEnv('sonarserver') {
-			  sh "${scannerHome}/bin/sonar-scanner"
-			}
+			sh "mkdir -p reports"
+			sh "cd build && make coverage && mv coverage.xml ../reports"
+			sh "mv TestResults.xml /reports"
+			stash includes: 'reports/*', name: 'reports'
 		}
 		
 		stage("Archive Build"){
@@ -40,6 +37,18 @@ node {
 			// Maybe something like 
 			//sh "curl -T archiv.zip -u username:password ftp://our_archive_server//commitid//whatever"
 			// Or using artifactory server with pipeline DSL
+		}
+	}
+	
+	stage("SonarQubing"){
+		
+		unstash 'reports'
+		sh "ls"
+		//sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> /reports/cppcheck.xml"
+		sh "echo 'sonar.projectName=jenkinsanddocker sonar.sources=src sonar.cxx.includeDirectories=include sonar.cxx.coverage.reportPath=coverage.xml sonar.cxx.xunit.reportsPaths=TestResults.xml' >> sonar-project.properties"
+		def scannerHome = tool 'sonarscanner';
+		withSonarQubeEnv('sonarserver') {
+		  sh "${scannerHome}/bin/sonar-scanner"
 		}
 	}
 		
