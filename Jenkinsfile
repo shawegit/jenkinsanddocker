@@ -46,8 +46,8 @@ node {
 		sh "echo 'sonar.projectName=Jenkins and Docker' >> sonar-project.properties"
 		sh "echo 'sonar.sources=src' >> sonar-project.properties"
 		sh "echo 'sonar.cxx.includeDirectories=include' >> sonar-project.properties"
-		sh "echo 'sonar.cxx.coverage.reportPath=./reports/coverage.xml' >> sonar-project.properties"
-		sh "echo 'sonar.cxx.xunit.reportsPaths=./reports/TestResults.xml' >> sonar-project.properties"
+		sh "echo 'sonar.cxx.coverage.reportPath=/reports/coverage.xml' >> sonar-project.properties"
+		//sh "echo 'sonar.cxx.xunit.reportsPaths=/reports/TestResults.xml' >> sonar-project.properties"
 		sh "cat sonar-project.properties"
 		def scannerHome = tool 'sonarscanner';
 		withSonarQubeEnv('sonarserver') {
