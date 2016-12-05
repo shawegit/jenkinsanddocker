@@ -82,7 +82,9 @@ parallel "Linux":{
 failFast: true
 
 node("master"){
-	unstash "winbuild"
-	unstash "linuxbuild"
-	sh "ls"
+	stage("Deliver"){
+		unstash "winbuild"
+		unstash "linuxbuild"
+		sh "ls"
+	}
 }
