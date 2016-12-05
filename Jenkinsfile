@@ -79,9 +79,10 @@ node("master"){
 		deleteDir()
 		unstash "winbuild"
 		unstash "linuxbuild"
-		sh "zip linuxbuild.zip linuxbuild"
-		sh "zip winbuild.zip winbuild"
-		sh "ls"
+		sh "zip linuxbuild.zip linuxbuild/*"
+		sh "zip winbuild.zip winbuild/*"
+		sh "ls winbuild"
+		sh "ls linuxbuild"
 		archiveArtifacts 'linuxbuild.zip, winbuild.zip' 
 		// Maybe something like 
 		//sh "curl -T archiv.zip -u username:password ftp://our_archive_server//commitid//whatever"
