@@ -8,6 +8,7 @@ node("master"){
 parallel "Unix":{
 	node("master"){
 		unstash "code"
+		sh "ls"
 		def image
 		stage("Prepare Docker"){
 			image  = docker.build 'simons-node'
