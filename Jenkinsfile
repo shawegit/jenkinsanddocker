@@ -26,8 +26,9 @@ node {
 		
 		stage("Code analysis"){
 			sh "mkdir -p reports"
-			sh "cd build && make coverage && mv coverage.xml ../reports"
-			sh "mv TestResults.xml /reports"
+			sh "cd build && make coverage && mv coverage.xml ../reports/"
+			sh "ls"
+			sh "mv TestResults.xml ./reports/"
 			stash includes: 'reports/*', name: 'reports'
 		}
 		
