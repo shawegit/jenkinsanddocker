@@ -1,4 +1,4 @@
-node {
+node('master){
 	def image
     stage("Checkout"){
         checkout scm
@@ -49,6 +49,7 @@ node {
 		sh "echo 'sonar.cxx.coverage.reportPath=reports/coverage.xml' >> sonar-project.properties"
 		sh "echo 'sonar.cxx.xunit.reportsPaths=reports/TestResults.xml' >> sonar-project.properties"
 		sh "echo 'sonar.cxx.cppcheck.reportPath=reports/cppcheck.xml' >> sonar-project.properties"
+		sh "echo 'tests=test' >> sonar-project.properties"
 		def scannerHome = tool 'sonarscanner';
 		withSonarQubeEnv('sonarserver') {
 		  sh "${scannerHome}/bin/sonar-scanner"
@@ -57,5 +58,15 @@ node {
 		
     stage("Cleanup"){
         deleteDir()
+	}
+}
+
+node('shawewin'){
+	checkout scm
+	stage("Windows Build"){
+		bat "mdkir build"
+		bat "cd build && cmake -G "Visual Studio 2014 15 Win64" -DCMAKE_BUILD_TYPE=Release .."
+		bat "\"${tool 'MSBuild'}\" dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+"
 	}
 }
