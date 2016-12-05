@@ -18,7 +18,7 @@ parallel "Linux":{
 			stage("Linux Build"){
 				sh "mkdir -p build && cd build && cmake -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release .. && make"
 				sh "mkdir -p linuxbuild && cp build/dockerandjenkinsapp linuxbuild/dockerandjenkinsapp && cp build/libdockerandjenkinslib.so linuxbuild/libdockerandjenkinslib.so"
-				stash name: "linuxbuild", include: "linuxbuild/*"
+				stash name: "linuxbuild", includes: "linuxbuild/*"
 			}
 			
 			stage("Linux Test"){
@@ -67,7 +67,7 @@ parallel "Linux":{
 			bat "cd build && msbuild dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
 			bat "if not exist winbuild md winbuild"
 			bat "xcopy build\\Release\\* winbuild"
-			stash name: "winbuild", include: "winbuild/*"
+			stash name: "winbuild", includes: "winbuild/*"
 		}
 		deleteDir()
 	}
