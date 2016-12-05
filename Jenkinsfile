@@ -49,6 +49,8 @@ node {
 		sh "echo 'sonar.cxx.coverage.reportPath=/reports/coverage.xml' >> sonar-project.properties"
 		sh "echo 'sonar.cxx.xunit.reportsPaths=/reports/TestResults.xml' >> sonar-project.properties"
 		sh "cat sonar-project.properties"
+		sh "cat /reports/TestResults.xml"
+		sh "cat /reports/coverage.xml"
 		def scannerHome = tool 'sonarscanner';
 		withSonarQubeEnv('sonarserver') {
 		  sh "${scannerHome}/bin/sonar-scanner"
