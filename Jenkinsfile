@@ -42,7 +42,6 @@ node {
 	}
 	
 	stage("SonarQubing"){
-		
 		//unstash 'reports'
 		sh "ls"
 		//sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> /reports/cppcheck.xml"
