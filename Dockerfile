@@ -6,7 +6,7 @@ RUN apt-get install -y build-essential wget cmake software-properties-common
 # Add new gcc and g++
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y && apt-get update
 RUN apt-get install gcc-snapshot -y && apt-get update
-RUN apt-get install gcc-6 g++-6 -y 
+RUN apt-get install gcc-6 g++-6 zip -y 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5
 
