@@ -62,6 +62,7 @@ node("master"){
 }
 
 node("shawewin"){
+    deleteDir()
 	checkout scm
 	stage("Windows Build"){
 		bat "md build"
