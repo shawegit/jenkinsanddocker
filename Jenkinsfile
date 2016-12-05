@@ -2,7 +2,7 @@ node("master"){
     stage("Checkout"){
         checkout scm
 	}
-	stash name: "code", exclude: "build"
+	stash name: "code", excludes: "build"
 }
 
 parallel "Linux":{
