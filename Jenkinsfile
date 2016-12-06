@@ -17,12 +17,10 @@ parallel "Linux":{
 		image.inside {
 			sh "mkdir -p reports"
 			stage("Linux Build"){
-				sh "mkdir -p build && cd build && cmake -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release .. && make"
-				sh "mkdir -p linuxbuild && cp build/dockerandjenkinsapp linuxbuild/dockerandjenkinsapp && cp build/libdockerandjenkinslib.so linuxbuild/libdockerandjenkinslib.so"
-				stash name: "linuxbuild", includes: "linuxbuild/*"
 			}
 			
-			stage("Linux Test"){
+			stage("Linux Unit Tests"){
+				sh "mkdir -p build && cd build && cmake -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release .. && make"
 				//Running ctest with the option -T Test will make CTest generate an XML output file
 				//in a sub-folder Testing inside the build folder
 				//The || /usr/bin/true is necessary to prevent Jenkins from aborting the build 
@@ -32,10 +30,15 @@ parallel "Linux":{
 				junit 'reports/TestResults.xml'
 			}
 			
-			stage("Code analysis"){
+			stage("Code Analysis"){
 				sh "cd build && make coverage && mv coverage.xml ../reports/"
 				sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> reports/cppcheck.xml"
-				//sh "mv TestResults.xml reports/"
+			}
+			
+			stage("Linux Build"){
+				sh "mkdir -p build && cd build && cmake -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release .. && make"
+				sh "mkdir -p linuxbuild && cp build/dockerandjenkinsapp linuxbuild/dockerandjenkinsapp && cp build/libdockerandjenkinslib.so linuxbuild/libdockerandjenkinslib.so"
+				stash name: "linuxbuild", includes: "linuxbuild/*"
 			}
 		}
 		
@@ -44,11 +47,12 @@ parallel "Linux":{
 			sh "echo 'sonar.projectVersion=1.0' >> sonar-project.properties"
 			sh "echo 'sonar.projectName=Jenkins and Docker' >> sonar-project.properties"
 			sh "echo 'sonar.sources=src' >> sonar-project.properties"
+			sh "echo 'sonar.tests=test' >> sonar-project.properties"
 			sh "echo 'sonar.cxx.includeDirectories=include' >> sonar-project.properties"
 			sh "echo 'sonar.cxx.coverage.reportPath=reports/coverage.xml' >> sonar-project.properties"
 			sh "echo 'sonar.cxx.xunit.reportsPaths=reports/TestResults.xml' >> sonar-project.properties"
 			sh "echo 'sonar.cxx.cppcheck.reportPath=reports/cppcheck.xml' >> sonar-project.properties"
-			sh "echo 'tests=test' >> sonar-project.properties"
+			
 			def scannerHome = tool 'sonarscanner';
 			withSonarQubeEnv('sonarserver') {
 			  sh "${scannerHome}/bin/sonar-scanner"
@@ -61,7 +65,6 @@ parallel "Linux":{
 		deleteDir() 
 		unstash "code"
 		stage("Windows Build"){
-			bat "echo %PATH%"
 			bat "if not exist build md build"
 			bat "cd build && cmake -G \"Visual Studio 14 2015 Win64\" -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release .."
 			bat "cd build && msbuild dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
