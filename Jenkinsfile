@@ -25,6 +25,7 @@ parallel "Linux":{
 				sh "cd build && ctest -T test --no-compress-output || /usr/bin/true"
 				sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > reports/TestResults.xml"
 				junit 'reports/TestResults.xml'
+				sh "cat reports/TestResults.xml"
 			}
 			
 			stage("Code Analysis"){
