@@ -50,6 +50,7 @@ parallel "Linux":{
 			sh "echo 'sonar.cxx.includeDirectories=include' >> sonar-project.properties"
 			sh "echo 'sonar.cxx.coverage.reportPath=reports/coverage.xml' >> sonar-project.properties"
 			sh "echo 'sonar.cxx.xunit.reportPath=reports/TestResults.xml' >> sonar-project.properties"
+			sh "echo 'sonar.cxx.xunit.provideDetails=true' >> sonar-project.properties"
 			sh "echo 'sonar.cxx.cppcheck.reportPath=reports/cppcheck.xml' >> sonar-project.properties"
 			
 			def scannerHome = tool 'sonarscanner';
