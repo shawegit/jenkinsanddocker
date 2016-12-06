@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" indent="yes" />
 	<xsl:template match="/">
-		<assemblies>
+		<assembly>
 			<xsl:variable name="buildName" select="//Site/@BuildName"/>
 			<xsl:variable name="numberOfTests" select="count(//Site/Testing/Test)"/>
 			<xsl:variable name="numberOfFailures" select="count(//Site/Testing/Test[@Status!='passed'])" />
@@ -30,6 +30,6 @@
 					</testcase>
 				</xsl:for-each>
 			</testsuite>
-		</assemblies>
+		</assembly>
 	</xsl:template>
 </xsl:stylesheet>
