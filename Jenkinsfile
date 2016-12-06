@@ -15,6 +15,7 @@ parallel "Linux":{
 		}
 		
 		image.inside {
+			sh "mkdir -p reports"
 			stage("Linux Build"){
 				sh "mkdir -p build && cd build && cmake -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release .. && make"
 				sh "mkdir -p linuxbuild && cp build/dockerandjenkinsapp linuxbuild/dockerandjenkinsapp && cp build/libdockerandjenkinslib.so linuxbuild/libdockerandjenkinslib.so"
@@ -27,15 +28,14 @@ parallel "Linux":{
 				//The || /usr/bin/true is necessary to prevent Jenkins from aborting the build 
 				//prematurely (without running the xUnit plug-in) if some tests fail.
 				sh "cd build && ctest -T test --no-compress-output || /usr/bin/true"
-				sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > TestResults.xml"
-				junit 'TestResults.xml'
+				sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > reports/TestResults.xml"
+				junit 'reports/TestResults.xml'
 			}
 			
 			stage("Code analysis"){
-				sh "mkdir -p reports"
 				sh "cd build && make coverage && mv coverage.xml ../reports/"
 				sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> reports/cppcheck.xml"
-				sh "mv TestResults.xml ./reports/"
+				//sh "mv TestResults.xml reports/"
 			}
 		}
 		
@@ -81,8 +81,6 @@ node("master"){
 		unstash "linuxbuild"
 		sh "zip linuxbuild.zip linuxbuild/*"
 		sh "zip winbuild.zip winbuild/*"
-		sh "ls winbuild"
-		sh "ls linuxbuild"
 		archiveArtifacts 'linuxbuild.zip, winbuild.zip' 
 		// Maybe something like 
 		//sh "curl -T archiv.zip -u username:password ftp://our_archive_server//commitid//whatever"
