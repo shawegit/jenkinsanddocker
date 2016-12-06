@@ -9,4 +9,11 @@ master:
   ports:
     - "8080:8080"
     - "50000:50000"
+sonar:
+  build: sonar
+  environment:
+    - SONARQUBE_JDBC_USERNAME=sonar
+    - SONARQUBE_JDBC_PASSWORD=sonar
+    - SONARQUBE_JDBC_URL=
+  ports:
     - "9000:9000"

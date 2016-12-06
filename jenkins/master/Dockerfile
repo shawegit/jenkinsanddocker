@@ -1,12 +1,10 @@
 FROM jenkins:latest
-MAINTAINER GeneralInterfaces
+MAINTAINER Simon Hawe
 
 USER root
 
-RUN mkdir /var/log/jenkins
-RUN mkdir /var/cache/jenkins
-RUN chown -R jenkins:jenkins /var/log/jenkins
-RUN chown -R jenkins:jenkins /var/cache/jenkins
+RUN mkdir /var/log/jenkins && chown -R jenkins:jenkins /var/log/jenkins
+RUN mkdir /var/cache/jenkins && chown -R jenkins:jenkins /var/cache/jenkins
 
 RUN apt-get update 
 # Install docker 
@@ -21,10 +19,6 @@ RUN apt-get install -y docker-engine wget zip
 RUN apt-get install -y sudo
 RUN rm -rf /var/lib/apt/lists/*
 RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
-RUN wget https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-5.6.zip && unzip sonarqube-5.6 && mv sonarqube-5.6 /opt/sonar
-RUN wget https://github.com/SonarOpenCommunity/sonar-cxx/releases/download/cxx-0.9.6/sonar-cxx-plugin-0.9.6.jar && mv sonar-cxx-plugin-0.9.6.jar /opt/sonar/extensions/plugins
-
-RUN wget http://sourceforge.net/projects/pmd/files/pmd/4.2.6/pmd-bin-4.2.6.zip && unzip pmd-bin-4.2.6 && mv pmd-bin-4.2.6 /opt/pmd
 
 USER jenkins
 ENV JAVA_OPTS="-Xmx8192m"

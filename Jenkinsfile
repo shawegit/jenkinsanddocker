@@ -16,9 +16,6 @@ parallel "Linux":{
 		
 		image.inside {
 			sh "mkdir -p reports"
-			stage("Linux Build"){
-			}
-			
 			stage("Linux Unit Tests"){
 				sh "mkdir -p build && cd build && cmake -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release .. && make"
 				//Running ctest with the option -T Test will make CTest generate an XML output file
