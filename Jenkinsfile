@@ -24,7 +24,8 @@ parallel "Linux":{
 				//in a sub-folder Testing inside the build folder
 				//The || /usr/bin/true is necessary to prevent Jenkins from aborting the build 
 				//prematurely (without running the xUnit plug-in) if some tests fail.
-				sh "cd build && valgrind --xml=yes --xml-file=../reports/valgrind.xml ctest -T test --no-compress-output || /true"
+				//sh "cd build && valgrind --xml=yes --xml-file=../reports/valgrind.xml ctest -T test --no-compress-output || /true"
+				sh "cd build && ctest -T test --no-compress-output || /true"
 				sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > reports/TestResults.xml"
 			}
 			
@@ -47,7 +48,7 @@ parallel "Linux":{
 			sh "echo 'sonar.cxx.xunit.reportPath=reports/TestResults.xml' >> sonar-project.properties"
 			//sh "echo 'sonar.cxx.xunit.provideDetails=true' >> sonar-project.properties"
 			sh "echo 'sonar.cxx.cppcheck.reportPath=reports/cppcheck.xml' >> sonar-project.properties"
-			sh "echo 'sonar.cxx.valgrind.reportPath=reports/valgrind.xml' >> sonar-project.properties"
+			//sh "echo 'sonar.cxx.valgrind.reportPath=reports/valgrind.xml' >> sonar-project.properties"
 			
 			def scannerHome = tool 'sonarscanner';
 			withSonarQubeEnv('sonarserver') {
