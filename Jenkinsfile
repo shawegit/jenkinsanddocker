@@ -24,8 +24,8 @@ parallel "Linux":{
 				//in a sub-folder Testing inside the build folder
 				//The || /usr/bin/true is necessary to prevent Jenkins from aborting the build 
 				//prematurely (without running the xUnit plug-in) if some tests fail.
-				//sh "cd build && valgrind --xml=yes --xml-file=../reports/valgrind.xml ctest -T test --no-compress-output || /true"
-				sh "cd build && ctest -T test --no-compress-output || /true"
+				//sh "cd build && valgrind --xml=yes --xml-file=../reports/valgrind.xml ctest -T test --no-compress-output || true"
+				sh "cd build && ctest -T test --no-compress-output || true"
 				sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > reports/TestResults.xml"
 			}
 			
