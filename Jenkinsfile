@@ -105,8 +105,8 @@ parallel "Linux":{
 		}
 		deleteDir()
 	}
-},
-failFast: true
+}
+//,failFast: true
 
 node("master"){
 	stage("Deliver"){
