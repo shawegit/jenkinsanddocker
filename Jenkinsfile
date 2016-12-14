@@ -10,8 +10,10 @@ parallel "Linux":{
 		deleteDir()
 		unstash "code"
 		def image
-		stage("Prepare Docker"){
-			image  = docker.build 'simons-node'
+		stage("Prepare Linux Docker"){
+			dir("images/linux"){
+				image  = docker.build 'linux-build-node'
+			}
 		}
 		
 		image.inside {
@@ -22,10 +24,8 @@ parallel "Linux":{
 				//in a sub-folder Testing inside the build folder
 				//The || /usr/bin/true is necessary to prevent Jenkins from aborting the build 
 				//prematurely (without running the xUnit plug-in) if some tests fail.
-				sh "cd build && ctest -T test --no-compress-output || /usr/bin/true"
+				sh "cd build && valgrind --xml=yes --xml-file=../reports/valgrind.xml ctest -T test --no-compress-output || /true"
 				sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > reports/TestResults.xml"
-				junit 'reports/TestResults.xml'
-				sh "cat reports/TestResults.xml"
 			}
 			
 			stage("Code Analysis"){
@@ -33,11 +33,6 @@ parallel "Linux":{
 				sh "cppcheck --enable=all --inconclusive --xml --xml-version=2 -I ./include ./src 2> reports/cppcheck.xml"
 			}
 			
-			stage("Linux Build"){
-				sh "mkdir -p build && cd build && cmake -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release .. && make"
-				sh "mkdir -p linuxbuild && cp build/dockerandjenkinsapp linuxbuild/dockerandjenkinsapp && cp build/libdockerandjenkinslib.so linuxbuild/libdockerandjenkinslib.so"
-				stash name: "linuxbuild", includes: "linuxbuild/*"
-			}
 		}
 		
 		stage("SonarQubing"){
@@ -50,26 +45,61 @@ parallel "Linux":{
 			sh "echo 'sonar.cxx.includeDirectories=include' >> sonar-project.properties"
 			sh "echo 'sonar.cxx.coverage.reportPath=reports/coverage.xml' >> sonar-project.properties"
 			sh "echo 'sonar.cxx.xunit.reportPath=reports/TestResults.xml' >> sonar-project.properties"
-			sh "echo 'sonar.cxx.xunit.provideDetails=true' >> sonar-project.properties"
+			//sh "echo 'sonar.cxx.xunit.provideDetails=true' >> sonar-project.properties"
 			sh "echo 'sonar.cxx.cppcheck.reportPath=reports/cppcheck.xml' >> sonar-project.properties"
+			sh "echo 'sonar.cxx.valgrind.reportPath=reports/valgrind.xml' >> sonar-project.properties"
 			
 			def scannerHome = tool 'sonarscanner';
 			withSonarQubeEnv('sonarserver') {
 			  sh "${scannerHome}/bin/sonar-scanner"
 			}
 		}
+		
+		image.inside {
+			stage("Linux Evaluate Unit Tests"){
+				junit 'reports/TestResults.xml'
+			}
+			
+			stage("Linux Build"){
+				sh "mkdir -p build && cd build && cmake -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release .. && make"
+				sh "mkdir -p linuxbuild && cp build/dockerandjenkinsapp linuxbuild/dockerandjenkinsapp && cp build/libdockerandjenkinslib.so linuxbuild/libdockerandjenkinslib.so"
+				stash name: "linuxbuild", includes: "linuxbuild/*"
+			}
+		}
+		
 		deleteDir()
 	}
 }, "Windows":{
-	node("shawewin"){
+	node("winnode"){
 		deleteDir() 
 		unstash "code"
-		stage("Windows Build"){
-			bat "if not exist build md build"
-			bat "cd build && cmake -G \"Visual Studio 14 2015 Win64\" -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release .."
-			bat "cd build && msbuild dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+		
+		def image
+		stage("Prepare Windows Docker"){
+			dir("images/win"){
+				image  = docker.build 'win-build-node'
+			}
+		}
+		image.inside {
+			stage("Windows Build"){
+				bat "if not exist build md build"
+				bat "cd build; cmake -G \"Visual Studio 14 2015 Win64\" -DBUILD_TESTS=ON .."
+				bat "cd build; msbuild dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+			}
+			stage("Windows Unit Tests"){
+				bat "cd build; ctest -T test --no-compress-output -C Release"
+				//sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > reports/TestResults.xml"
+			}
+		}
+		
+		stage("Publish"){
+			// Need to check whether the tests have passed or not
+			//stage("Windows Evaluate Unit Tests"){
+			//	junit 'reports/TestResults.xml'
+			//}
+			// Here we need to publish to junit ...
 			bat "if not exist winbuild md winbuild"
-			bat "xcopy build\\Release\\* winbuild"
+			bat "xcopy build\\Release\\dockerandjenkinsapp.exe winbuild\\dockerandjenkinsapp.exe; xcopy build\\Release\\dockerandjenkinslib.dll winbuild\\dockerandjenkinslib.dll"
 			stash name: "winbuild", includes: "winbuild/*"
 		}
 		deleteDir()
