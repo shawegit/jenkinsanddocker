@@ -1,27 +1,43 @@
-data:
- build: data
-master:
-  build: master
-  volumes:
-    - "/var/run/docker.sock:/var/run/docker.sock"
-  volumes_from:
-    - data
-  ports:
-    - "8080:8080"
-    - "50000:50000"
-db:
-  build: database
-  ports:
-    - "3306:3306"
-    
-sonar:
-  build: sonar
-  environment:
-    - SONARQUBE_JDBC_USERNAME=sonar
-    - SONARQUBE_JDBC_PASSWORD=sonar
-    - SONARQUBE_JDBC_URL=jdbc:mysql://db:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
-  ports:
-    - "9000:9000"
-  links:
-    - db
+version: '2'
+services:
+    master:
+      build: master
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - data_log:/var/log/jenkins
+        - data_home:/var/jenkins_home
+      ports:
+        - "8080:8080"
+        - "50000:50000"
+        
+    sonar:
+      build: sonar
+      environment:
+        - SONARQUBE_JDBC_USERNAME=sonar
+        - SONARQUBE_JDBC_PASSWORD=sonar
+        - SONARQUBE_JDBC_URL=jdbc:mysql://db:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useConfigs=maxPerformance
+      ports:
+        - "9000:9000"
+        
+    db:
+      image: mysql
+      expose:
+        - "3306"
+      volumes:
+        - data_mysql:/var/lib/mysql
+        - data_log:/var/log/mysql
+      environment:
+       - MYSQL_ROOT_PASSWORD=sonar
+       - MYSQL_DATABASE=sonar
+       - MYSQL_USER=sonar
+       - MYSQL_PASSWORD=sonar
+       
+volumes:  
+  data_mysql:
+    driver: local
 
+  data_log:
+    driver: local
+
+  data_home:
+    driver: local

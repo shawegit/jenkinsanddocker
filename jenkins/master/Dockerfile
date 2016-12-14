@@ -1,5 +1,5 @@
 FROM jenkins:latest
-MAINTAINER Simon Hawe
+MAINTAINER Simon Hawe sh@gi.ai
 
 USER root
 
@@ -23,7 +23,17 @@ RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
 USER jenkins
 ENV JAVA_OPTS="-Xmx8192m"
 ENV JENKINS_OPTS="--logfile=/var/log/jenkins/jenkins.log --webroot=/var/cache/jenkins/war"
-
+# Install plugins that are not default plugins
+COPY plugins.txt /plugins.txt
+# Max be this works under linux, under windows it did not and I had to manually add each plugin inside this dockerfile
+#RUN /usr/local/bin/install-plugins.sh /plugins.txt
+RUN /usr/local/bin/install-plugins.sh \
+  greenballs \
+  docker-workflow \
+  sonar \
+  blueocean \
+  bitbucket \
+  disk-usage
 # Here some hacky stuff to run docker without typing sudo docker ...
 USER root
 COPY run.sh ./run.sh 

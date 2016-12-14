@@ -1,5 +1,6 @@
 FROM openjdk:8-jdk
-MAINTAINER Simon Hawe
+MAINTAINER Simon Hawe sh@gi.ai
+
 ENV SONAR_VERSION=5.6.3 \
 	SONAR_CXX_VERSION=0.9.6\
     SONARQUBE_HOME=/opt/sonarqube \
