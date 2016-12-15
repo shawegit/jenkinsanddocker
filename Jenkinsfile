@@ -65,6 +65,17 @@ parallel "Linux":{
 				sh "mkdir -p build && cd build && cmake -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release .. && make"
 				sh "mkdir -p linuxbuild && cp build/dockerandjenkinsapp linuxbuild/dockerandjenkinsapp && cp build/libdockerandjenkinslib.so linuxbuild/libdockerandjenkinslib.so"
 				stash name: "linuxbuild", includes: "linuxbuild/*"
+				
+				def server = Artifactory.newServer url: 'http://192.168.2.7:8081/artifactory/'
+				def uploadSpec = """{
+				  "files": [
+					{
+					  "pattern": "reports/*",
+					  "target": "reports"
+					}
+				 ]
+				}"""
+				server.upload(uploadSpec)
 			}
 		}
 		
