@@ -70,8 +70,16 @@ parallel "Linux":{
 				def uploadSpec = """{
 				  "files": [
 					{
-					  "pattern": "reports/*",
-					  "target": "reports"
+					  "pattern": "reports/cppcheck.xml",
+					  "target": "cppcheck.xml"
+					},
+					{
+					  "pattern": "reports/TestResults.xml",
+					  "target": "TestResults.xml"
+					},
+					{
+					  "pattern": "reports/coverage.xml",
+					  "target": "coverage.xml"
 					}
 				 ]
 				}"""
