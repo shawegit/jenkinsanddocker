@@ -71,15 +71,15 @@ parallel "Linux":{
 				  "files": [
 					{
 					  "pattern": "reports/cppcheck.xml",
-					  "target": "libs-release"
+					  "target": "libs-release-local"
 					},
 					{
 					  "pattern": "reports/TestResults.xml",
-					  "target": "libs-release"
+					  "target": "libs-release-local"
 					},
 					{
 					  "pattern": "reports/coverage.xml",
-					  "target": "libs-release"
+					  "target": "libs-release-local"
 					}
 				 ]
 				}"""
