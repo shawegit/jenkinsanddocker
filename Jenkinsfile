@@ -83,7 +83,9 @@ parallel "Linux":{
 					}
 				 ]
 				}"""
-				server.upload(uploadSpec)
+				def buildInfo = Artifactory.newBuildInfo()
+				server.upload(uploadSpec, buildInfo)
+				server.publishBuildInfo(buildInfo)
 			}
 		}
 		
