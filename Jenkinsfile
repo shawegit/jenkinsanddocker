@@ -74,7 +74,9 @@ parallel "Linux":{
 	node("winnode"){
 		deleteDir() 
 		unstash "code"
-		
+		stage("MyTestStage"){
+			bat "echo 'Simon was here'"
+		}
 		def image
 		stage("Prepare Windows Docker"){
 			dir("images/win"){

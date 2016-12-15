@@ -4,7 +4,7 @@ services:
       build: master
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
-        - data_log:/var/log/jenkins
+        - data_log_jenkins:/var/log/jenkins
         - data_home:/var/jenkins_home
       ports:
         - "8080:8080"
@@ -25,7 +25,7 @@ services:
         - "3306"
       volumes:
         - data_mysql:/var/lib/mysql
-        - data_log:/var/log/mysql
+        - data_log_sql:/var/log/mysql
       environment:
        - MYSQL_ROOT_PASSWORD=sonar
        - MYSQL_DATABASE=sonar
@@ -36,7 +36,10 @@ volumes:
   data_mysql:
     driver: local
 
-  data_log:
+  data_log_sql:
+    driver: local
+    
+  data_log_jenkins:
     driver: local
 
   data_home:
