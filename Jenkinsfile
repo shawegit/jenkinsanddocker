@@ -75,8 +75,10 @@ parallel "Linux":{
 		deleteDir() 
 		unstash "code"
 		def image
+		
 		stage("Prepare Windows Docker"){
 			dir("images/win"){
+				unstash "code"
 				bat "echo 'Start build'"
 				bat "dir"
 				image  = docker.build 'win-build-node'
