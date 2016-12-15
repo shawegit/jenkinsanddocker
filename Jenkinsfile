@@ -71,15 +71,15 @@ parallel "Linux":{
 				  "files": [
 					{
 					  "pattern": "reports/cppcheck.xml",
-					  "target": "cppcheck.xml"
+					  "target": "somewhere"
 					},
 					{
 					  "pattern": "reports/TestResults.xml",
-					  "target": "TestResults.xml"
+					  "target": "somewhere"
 					},
 					{
 					  "pattern": "reports/coverage.xml",
-					  "target": "coverage.xml"
+					  "target": "somewhere"
 					}
 				 ]
 				}"""
