@@ -16,6 +16,7 @@ parallel "Linux":{
 			}
 		}
 		
+		def testResults = "reports/TestResults.xml"
 		image.inside {
 			sh "mkdir -p reports"
 			stage("Linux Unit Tests"){
@@ -26,7 +27,8 @@ parallel "Linux":{
 				//prematurely (without running the xUnit plug-in) if some tests fail.
 				//sh "cd build && valgrind --xml=yes --xml-file=../reports/valgrind.xml ctest -T test --no-compress-output || true"
 				sh "cd build && ctest -T test --no-compress-output || true"
-				sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > reports/TestResults.xml"
+				sh sprintf('xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > %1$s',[testResults])
+				//sh "xsltproc ./helper/ctest-to-junit.xsl ./build/Testing/`head -n 1 < ./build/Testing/TAG`/Test.xml > reports/TestResults.xml"
 			}
 			
 			stage("Code Analysis"){
