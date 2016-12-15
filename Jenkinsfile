@@ -66,7 +66,7 @@ parallel "Linux":{
 				sh "mkdir -p linuxbuild && cp build/dockerandjenkinsapp linuxbuild/dockerandjenkinsapp && cp build/libdockerandjenkinslib.so linuxbuild/libdockerandjenkinslib.so"
 				stash name: "linuxbuild", includes: "linuxbuild/*"
 				
-				def server = Artifactory.newServer url: 'http://192.168.2.7:8081/artifactory/'
+				def server = Artifactory.newServer url: 'http://192.168.2.7:8081/artifactory/', username: 'admin', password: 'password'
 				def uploadSpec = """{
 				  "files": [
 					{
