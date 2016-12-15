@@ -76,10 +76,14 @@ parallel "Linux":{
 		unstash "code"
 		stage("MyTestStage"){
 			bat "echo 'Simon was here'"
+			dir("images\\win"){
+				bat "echo 'Simon got into images\\win'"
+			}
 		}
 		def image
 		stage("Prepare Windows Docker"){
 			dir("images/win"){
+				bat "echo 'Start build'"
 				image  = docker.build 'win-build-node'
 			}
 		}
