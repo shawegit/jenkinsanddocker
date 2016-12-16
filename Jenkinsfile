@@ -99,9 +99,6 @@ parallel "Linux":{
 		
 		stage("Prepare Windows Docker"){
 			dir("images/win"){
-				unstash "code"
-				bat "echo 'Start build'"
-				bat "dir"
 				image  = docker.build 'win-build-node'
 			}
 		}
@@ -109,7 +106,7 @@ parallel "Linux":{
 			stage("Windows Build"){
 				bat "if not exist build md build"
 				bat "cd build; cmake -G \"Visual Studio 14 2015 Win64\" -DBUILD_TESTS=ON .."
-				bat "cd build; msbuild dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+				bat "cd build; msbuild dockerandjenkins.sln /p:Configuration=Release /p:Platform=\"x64\""
 			}
 			stage("Windows Unit Tests"){
 				bat "cd build; ctest -T test --no-compress-output -C Release"

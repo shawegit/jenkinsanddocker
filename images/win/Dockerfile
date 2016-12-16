@@ -27,10 +27,6 @@ RUN & 'C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat'; \
 	& '.\b2' -j4 toolset=msvc-14.0 address-model=32 architecture=x86 link=static threading=multi runtime-link=shared install --with-test variant=release -d0; \
 	& '.\b2' -j4 toolset=msvc-14.0 address-model=64 architecture=x86 link=static threading=multi runtime-link=shared install --with-test variant=release -d0
 
-COPY . /Code/
-WORKDIR /Code/
-RUN mkdir build
-RUN cd build; cmake -G 'Visual Studio 14 2015 Win64' -DBUILD_TESTS=ON ..
-# Create an entrypoint so container doesn't exit
+RUN net user jenkins /ADD
 ENTRYPOINT powershell
 
